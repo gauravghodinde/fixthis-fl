@@ -1,15 +1,40 @@
+import 'package:fixthis/pages/homepage.dart';
+import 'package:fixthis/pages/loginpage.dart';
+import 'package:fixthis/pages/signuppage.dart';
+import 'package:fixthis/providers/userProvider.dart';
+import 'package:fixthis/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'assets/images/logo.png';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => UserProvider())],
+    child: const MyApp(),
+  ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+
+  AuthService authService = AuthService();
+  @override
+  void initState() {
+    super.initState();
+    print("logginng in");
+    authService.getUserData(context);
+    print("logged  ");
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,7 +44,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff00bf63)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: Provider.of<UserProvider>(context).user.id != ""
+          ? HomePage()
+          : MyHomePage(),
     );
   }
 }
@@ -34,10 +61,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _incrementCounter() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,7 +163,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: MediaQuery.of(context).size.width -
                               MediaQuery.of(context).size.width / 5,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Login()));
+                            },
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                 Colors.black,
@@ -168,7 +196,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: MediaQuery.of(context).size.width -
                               MediaQuery.of(context).size.width / 5,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Signup()));
+                            },
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                 Colors.white,
