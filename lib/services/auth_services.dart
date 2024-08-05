@@ -83,6 +83,7 @@ class AuthService {
     try {
       final navigator = Navigator.of(context);
       var userProvider = Provider.of<UserProvider>(context, listen: false);
+      print("logging in");
       // final User user = User(
       //   id: '',
       //   name: '',

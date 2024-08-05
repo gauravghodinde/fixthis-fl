@@ -246,7 +246,7 @@ class _SignupState extends State<Signup> {
                                 height: 68,
                                 child: TextFormField(
                                   controller: _cityController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     border: OutlineInputBorder(),
                                     hintText: 'City',
                                   ),
@@ -268,7 +268,7 @@ class _SignupState extends State<Signup> {
                                 child: TextFormField(
                                   controller: _passwordController,
                                   obscureText: true,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     border: OutlineInputBorder(),
                                     hintText: 'Password',
                                   ),

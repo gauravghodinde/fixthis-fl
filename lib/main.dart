@@ -44,9 +44,10 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff00bf63)),
         useMaterial3: true,
       ),
-      home: Provider.of<UserProvider>(context).user.id != ""
-          ? HomePage()
-          : MyHomePage(),
+      // home: Provider.of<UserProvider>(context).user.id != ""
+      //     ? HomePage()
+      //     : MyHomePage(),
+      home: HomePage(),
     );
   }
 }
