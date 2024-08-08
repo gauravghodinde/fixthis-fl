@@ -29,18 +29,9 @@ class AuthService {
     }
 
     try {
-      // User user = User(
-      //   id: '',
-      //   name: name,
-      //   email: email,
-      //   phoneNumber: phoneNumber,
-      //   city: city,
-      //   password: password,
-      // );
-      // print(user.toJson().toString());
       http.Response res = await http.post(
         Uri.parse('${Constants.uri}/users/signup'),
-        // body: user.toJson(),
+    
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
         },

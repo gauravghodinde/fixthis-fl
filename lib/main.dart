@@ -1,17 +1,24 @@
 import 'package:fixthis/pages/homepage.dart';
 import 'package:fixthis/pages/loginpage.dart';
 import 'package:fixthis/pages/signuppage.dart';
+import 'package:fixthis/providers/categoryProvider.dart';
+import 'package:fixthis/providers/locationListProvider.dart';
+import 'package:fixthis/providers/locationProvider.dart';
+import 'package:fixthis/providers/productProvider.dart';
 import 'package:fixthis/providers/userProvider.dart';
 import 'package:fixthis/services/auth_services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-// import 'assets/images/logo.png';
 
 void main() {
   runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (_) => UserProvider())],
+    providers: [
+      ChangeNotifierProvider(create: (_) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => CategoryListProvider()),
+      ChangeNotifierProvider(create: (_) => ProductListProvider()),
+      ChangeNotifierProvider(create: (_) => LocationListProvider()),
+      ChangeNotifierProvider(create: (_) => LocationProvider()),
+    ],
     child: const MyApp(),
   ));
 }
