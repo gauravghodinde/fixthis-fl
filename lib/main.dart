@@ -2,6 +2,7 @@ import 'package:fixthis/pages/homepage.dart';
 import 'package:fixthis/pages/loginpage.dart';
 import 'package:fixthis/pages/signuppage.dart';
 import 'package:fixthis/providers/DeliveryLocationProvider.dart';
+import 'package:fixthis/providers/RepairReqestProvider.dart';
 import 'package:fixthis/providers/categoryProvider.dart';
 import 'package:fixthis/providers/locationListProvider.dart';
 import 'package:fixthis/providers/locationProvider.dart';
@@ -20,6 +21,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => LocationListProvider()),
       ChangeNotifierProvider(create: (_) => LocationProvider()),
       ChangeNotifierProvider(create: (_) => DeliveryLocationProvider()),
+      ChangeNotifierProvider(create: (_) => RepairRequestListProvider()),
     ],
     child: const MyApp(),
   ));

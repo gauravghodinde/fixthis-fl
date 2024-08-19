@@ -79,23 +79,6 @@ class AuthService {
       final navigator = Navigator.of(context);
       var userProvider = Provider.of<UserProvider>(context, listen: false);
       print("logging in");
-      // final User user = User(
-      //   id: '',
-      //   name: '',
-      //   email: '',
-      //   phoneNumber: '',
-      //   city: '',
-      //   password: '',
-      // );
-      // User user = User(
-      //   id: '',
-      //   name: name,
-      //   email: email,
-      //   phoneNumber: phoneNumber,
-      //   city: city,
-      //   password: password,
-      // );
-      // print(user.toJson().toString());
       http.Response res = await http.post(
         Uri.parse(
             'https://ft-final-gauravs-projects-9d6ba5c9.vercel.app/users/login'),
