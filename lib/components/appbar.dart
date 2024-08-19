@@ -1,12 +1,20 @@
+import 'package:fixthis/model/location.dart';
 import 'package:fixthis/pages/loaction_selector_page.dart';
+import 'package:fixthis/services/auth_services.dart';
 import 'package:fixthis/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class locationAppBar extends StatelessWidget {
-  const locationAppBar({super.key});
-
+  const locationAppBar({super.key, required this.location});
+  final Location location;
   @override
   Widget build(BuildContext context) {
+    AuthService authService = AuthService();
+
+    void _logout() {
+      authService.SignOut(context);
+    }
+
     return SliverAppBar(
       floating: false,
       snap: false,
@@ -21,7 +29,9 @@ class locationAppBar extends StatelessWidget {
                     isScrollControlled: true,
                     context: context,
                     builder: (BuildContext context) {
-                      return locationSelector();
+                      return locationSelector(
+                        type: "pickUp",
+                      );
                     });
               },
               icon: Icon(
@@ -37,10 +47,12 @@ class locationAppBar extends StatelessWidget {
                       isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) {
-                        return locationSelector();
+                        return locationSelector(
+                          type: "pickUp",
+                        );
                       });
                 },
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.fromLTRB(0, 8.0, 0, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +60,9 @@ class locationAppBar extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "Title Location",
+                            location.AddressType == ""
+                                ? "Select a Location"
+                                : location.AddressType,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           ),
@@ -56,7 +70,10 @@ class locationAppBar extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        "main Location",
+                        location.FlatHouseFloorBuilding == ""
+                            ? "click here to select a location"
+                            : location.FlatHouseFloorBuilding,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: Colors.black87),
                         textAlign: TextAlign.left,
                       )
@@ -66,7 +83,9 @@ class locationAppBar extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                _logout();
+              },
               icon: Icon(
                 Icons.account_circle_rounded,
                 color: Color(Constants.mainColorHsh),

@@ -7,10 +7,13 @@ import 'package:fixthis/components/productcard.dart';
 import 'package:fixthis/components/searchbar.dart';
 import 'package:fixthis/model/category.dart';
 import 'package:fixthis/model/categorylist.dart';
+import 'package:fixthis/model/locationlist.dart';
 import 'package:fixthis/model/product.dart';
 import 'package:fixthis/pages/loaction_selector_page.dart';
 import 'package:fixthis/pages/searchpage.dart';
 import 'package:fixthis/providers/categoryProvider.dart';
+import 'package:fixthis/providers/locationListProvider.dart';
+import 'package:fixthis/providers/locationProvider.dart';
 import 'package:fixthis/providers/productProvider.dart';
 import 'package:fixthis/providers/userProvider.dart';
 import 'package:fixthis/services/auth_services.dart';
@@ -32,14 +35,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool _stretch = true;
   bool _isLoading = true;
-
+  late String userid;
   @override
   void initState() {
     super.initState();
-    print("Home in");
+    final user = Provider.of<UserProvider>(context, listen: false).user;
+    userid = user.id;
+
     _fetchCategories();
     _fetchProducts();
-    print("homed  ");
+    _fetchLocations();
   }
 
   // Future<void> fetchCategories() async {
@@ -61,6 +66,7 @@ class _HomePageState extends State<HomePage> {
   // }
 
   void _fetchCategories() async {
+    print("ffetch");
     var categoryListProvider =
         Provider.of<CategoryListProvider>(context, listen: false);
 
@@ -86,7 +92,46 @@ class _HomePageState extends State<HomePage> {
       );
     } catch (e) {
       print(e.toString());
-      showSnackBar(context, " error ?? ${e.toString()}");
+      // showSnackBar(context, " error ?? ${e.toString()}");
+    }
+    print("ffetch");
+  }
+
+  Future<void> _fetchLocations() async {
+    print("fetching location");
+    var locationListProvider =
+        Provider.of<LocationListProvider>(context, listen: false);
+    print(userid);
+    try {
+      http.Response res = await http.post(
+        Uri.parse('http://192.168.231.58:3000/location/get'),
+        // body: user.toJson(),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(<String, String>{
+          'userId': userid,
+        }),
+      );
+      print(res.body);
+      print('Response status: ${res.statusCode}');
+      print('Response body: ${res.body}');
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          print(res.body);
+          locationListProvider.setLocationList(res.body);
+          setState(() {
+            // _categories =
+            //     jsonResponse.map((data) => Category.fromJson(data)).toList();
+            _isLoading = false;
+          });
+        },
+      );
+    } catch (e) {
+      print('Error: ${e.toString()}');
     }
   }
 
@@ -96,7 +141,7 @@ class _HomePageState extends State<HomePage> {
 
     try {
       http.Response res = await http.get(
-        Uri.parse('${Constants.uri}/product/getall'),
+        Uri.parse('${Constants.uri}product/getall'),
       );
       print('Response status: ${res.statusCode}');
       print('Response body: ${res.body}');
@@ -116,15 +161,18 @@ class _HomePageState extends State<HomePage> {
       );
     } catch (e) {
       print(e.toString());
-      showSnackBar(context, " error ?? ${e.toString()}");
+      // showSnackBar(context, " error ?? ${e.toString()}");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
+    userid = user.id;
     final _categories = Provider.of<CategoryListProvider>(context).categorylist;
     final _products = Provider.of<ProductListProvider>(context).Productlist;
+    final _location = Provider.of<LocationProvider>(context).loaction;
+
     // print(_categories);
     AuthService authService = AuthService();
     final List<String> items = List.generate(20, (index) => 'Item $index');
@@ -139,7 +187,9 @@ class _HomePageState extends State<HomePage> {
           physics: BouncingScrollPhysics(),
           slivers: <Widget>[
             // Location AppBar
-            locationAppBar(),
+            locationAppBar(
+              location: _location,
+            ),
             // Search Bar
             SliverAppBar(
               floating: true,
@@ -279,10 +329,11 @@ class _HomePageState extends State<HomePage> {
                               if (_products.Productlist[j].categoryId ==
                                   _categories.categorylist[i].id)
                                 ProductCard(
-                                  imageLink: _products.Productlist[j].image,
-                                  ProductName: _products.Productlist[j].name,
+                                  // imageLink: _products.Productlist[j].image,
+                                  // ProductName: _products.Productlist[j].name,
                                   CategorytName:
                                       _categories.categorylist[i].name,
+                                  product: _products.Productlist[j],
                                 ),
                           ],
                         )
@@ -317,7 +368,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      
     );
   }
 }

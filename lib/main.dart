@@ -1,6 +1,7 @@
 import 'package:fixthis/pages/homepage.dart';
 import 'package:fixthis/pages/loginpage.dart';
 import 'package:fixthis/pages/signuppage.dart';
+import 'package:fixthis/providers/DeliveryLocationProvider.dart';
 import 'package:fixthis/providers/categoryProvider.dart';
 import 'package:fixthis/providers/locationListProvider.dart';
 import 'package:fixthis/providers/locationProvider.dart';
@@ -18,6 +19,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => ProductListProvider()),
       ChangeNotifierProvider(create: (_) => LocationListProvider()),
       ChangeNotifierProvider(create: (_) => LocationProvider()),
+      ChangeNotifierProvider(create: (_) => DeliveryLocationProvider()),
     ],
     child: const MyApp(),
   ));
@@ -51,10 +53,10 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff00bf63)),
         useMaterial3: true,
       ),
-      // home: Provider.of<UserProvider>(context).user.id != ""
-      //     ? HomePage()
-      //     : MyHomePage(),
-      home: HomePage(),
+      home: Provider.of<UserProvider>(context).user.id != ""
+          ? HomePage()
+          : MyHomePage(),
+      // home: MyHomePage(),
     );
   }
 }

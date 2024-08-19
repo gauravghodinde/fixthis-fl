@@ -127,15 +127,16 @@ class _SearchPageState extends State<SearchPage> {
               ),
               if (_SelectedProduct.categoryId != "")
                 ProductCard(
-                    imageLink: _SelectedProduct.image,
-                    ProductName: _SelectedProduct.name,
+                    // imageLink: _SelectedProduct.image,
+                    // ProductName: _SelectedProduct.name,
+                    product: _SelectedProduct,
                     CategorytName: "")
               // Padding(
               //   padding: const EdgeInsets.all(8.0),
               //   child: Column(
               //     children: [
               //       Text('Selected Product:'),
-              //       Text('Name: ${_SelectedProduct!.name}'),+ 
+              //       Text('Name: ${_SelectedProduct!.name}'),+
               //       Text('ID: ${_SelectedProduct!.id}'),
               //       Text('Category ID: ${_SelectedProduct!.categoryId}'),
               //       Image.network(_SelectedProduct!.image),

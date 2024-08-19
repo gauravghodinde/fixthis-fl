@@ -26,8 +26,9 @@ class CategorySearchPage extends StatelessWidget {
                 for (int j = 0; j < _products.Productlist.length; j++)
                   if (_products.Productlist[j].categoryId == category.id)
                     ProductCard(
-                      imageLink: _products.Productlist[j].image,
-                      ProductName: _products.Productlist[j].name,
+                      // imageLink: _products.Productlist[j].image,
+                      // ProductName: _products.Productlist[j].name,
+                      product: _products.Productlist[j],
                       CategorytName: category.name,
                     ),
               ],

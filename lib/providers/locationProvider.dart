@@ -13,12 +13,12 @@ class LocationProvider extends ChangeNotifier {
 
   Location get loaction => _location;
 
-  void setLocationList(String location) {
+  void setLocation(String location) {
     _location = Location.fromJson(location);
     notifyListeners();
   }
 
-  void setLocationListFromModel(Location location) {
+  void setLocationFromModel(Location location) {
     _location = location;
     notifyListeners();
   }

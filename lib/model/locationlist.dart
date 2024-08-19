@@ -15,7 +15,7 @@ class LocationList {
   factory LocationList.fromMap(Map<String, dynamic> map) {
     return LocationList(
       locationlist: List<Location>.from(
-        (map['body'] as List<int>).map<Location>(
+        (map['body'] as List<dynamic>).map<Location>(
           (x) => Location.fromMap(x as Map<String, dynamic>),
         ),
       ),

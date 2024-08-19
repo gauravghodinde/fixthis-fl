@@ -18,6 +18,7 @@ class _SignupState extends State<Signup> {
   final AuthService authService = AuthService();
 
   void _signUp() {
+    print("pesse");
     authService.signUpUser(
       context: context,
       name: _nameController.text,
