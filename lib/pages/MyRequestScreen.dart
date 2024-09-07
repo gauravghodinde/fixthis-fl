@@ -12,40 +12,56 @@ class MyRequestScreen extends StatefulWidget {
 }
 
 class _MyRequestScreenState extends State<MyRequestScreen> {
-  // late String userid;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   final user = Provider.of<UserProvider>(context, listen: false).user;
-  //   userid = user.id;
-  // }
-
+  String val = "cancelled by user";
+  String seeall = "See All Requests";
+  String seeActive = "See Only Active";
+  String curButtonval = "See All Requests";
   @override
   Widget build(BuildContext context) {
     var _repairRequestListProvider =
-        Provider.of<RepairRequestListProvider>(context, listen: false)
+        Provider.of<RepairRequestListProvider>(context, listen: true)
             .repairRequestlist;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("My Requests"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  if (curButtonval == seeall) {
+                    val = "";
+                    curButtonval = seeActive;
+                  } else {
+                    val = "cancelled by user";
+                    curButtonval = seeall;
+                  }
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+              ),
+              child: Text(curButtonval),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
-        // child: Center(
-        //   child: Text("sfsg"),
-        // ),
         child: Padding(
           padding: EdgeInsets.all(8),
           child: ListView.builder(
               itemCount: _repairRequestListProvider.repairRequestList.length,
-              // itemCount: 10,
-              // crossAxisAlignment: CrossAxisAlignment.start,
               itemBuilder: (context, j) {
-                // return Text(
-                // _repairRequestListProvider.repairRequestList[j].status);
-                return RepairRequestCard(
-                  repairRequest:
-                      _repairRequestListProvider.repairRequestList[j],
-                );
+                return (_repairRequestListProvider
+                            .repairRequestList[j].status !=
+                        val
+                    ? RepairRequestCard(
+                        repairRequest:
+                            _repairRequestListProvider.repairRequestList[j],
+                      )
+                    : SizedBox.shrink());
               }),
         ),
       ),

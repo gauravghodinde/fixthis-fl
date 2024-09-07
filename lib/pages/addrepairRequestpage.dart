@@ -5,11 +5,11 @@ import 'package:fixthis/model/product.dart';
 import 'package:fixthis/providers/DeliveryLocationProvider.dart';
 import 'package:fixthis/providers/locationProvider.dart';
 import 'package:fixthis/providers/userProvider.dart';
+import 'package:fixthis/services/auth_services.dart';
 import 'package:fixthis/utils/constants.dart';
 import 'package:fixthis/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -89,7 +89,8 @@ class _AddRepairRequestState extends State<AddRepairRequest> {
   String imagePath = 'assets/images/iron.png';
   TextEditingController _descriptionController = TextEditingController();
 
-  Future<void> _makeRepairRequest() async {
+  Future<void> _makeRepairRequest(
+      AuthService authService, String userid) async {
     final navigator = Navigator.of(context);
 
     if (_categoryId == null ||
@@ -113,7 +114,7 @@ class _AddRepairRequestState extends State<AddRepairRequest> {
     });
 
     var request = http.MultipartRequest(
-        'POST', Uri.parse('http://192.168.231.58:3000/repair_request/add'));
+        'POST', Uri.parse('${Constants.uri}repair_request/add'));
 
     request.fields.addAll({
       'categoryId': _categoryId!,
@@ -134,7 +135,9 @@ class _AddRepairRequestState extends State<AddRepairRequest> {
         print(await response.stream.bytesToString());
         showSnackBar(context, "Request raised successfully.");
         // Navigator.pop(context);
+        authService.fetchRepairRequest(context: context, userid: userid);
         navigator.pop();
+
         // Handle successful response here
       } else {
         print(response.reasonPhrase);
@@ -153,6 +156,9 @@ class _AddRepairRequestState extends State<AddRepairRequest> {
 
   @override
   Widget build(BuildContext context) {
+    AuthService authService = AuthService();
+    final user = Provider.of<UserProvider>(context).user;
+    String userid = user.id;
     final _location = Provider.of<LocationProvider>(context).loaction;
     final _deliverylocation =
         Provider.of<DeliveryLocationProvider>(context).loaction;
@@ -175,7 +181,7 @@ class _AddRepairRequestState extends State<AddRepairRequest> {
                 // setState(() {
                 //   _makingRequest = !_makingRequest;
                 // });
-                _makeRepairRequest();
+                _makeRepairRequest(authService, userid);
                 // Navigator.pop(context);
                 // showSnackBar(context, "repair request raised");
               },

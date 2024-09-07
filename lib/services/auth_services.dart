@@ -1,8 +1,13 @@
 import 'dart:convert';
-import 'package:fixthis/main.dart';
+import 'package:fixthis/model/pendingActionList.dart';
 import 'package:fixthis/model/user.dart';
+import 'package:fixthis/pages/LoginSignupPage.dart';
 import 'package:fixthis/pages/homepage.dart';
+import 'package:fixthis/providers/RepairReqestProvider.dart';
+import 'package:fixthis/providers/categoryProvider.dart';
 import 'package:fixthis/providers/locationListProvider.dart';
+import 'package:fixthis/providers/pendingActionProvider.dart';
+import 'package:fixthis/providers/productProvider.dart';
 import 'package:fixthis/providers/userProvider.dart';
 import 'package:fixthis/utils/constants.dart';
 import 'package:fixthis/utils/utils.dart';
@@ -32,8 +37,7 @@ class AuthService {
 
     try {
       http.Response res = await http.post(
-        Uri.parse(
-            'https://ft-final-gauravs-projects-9d6ba5c9.vercel.app/users/signup'),
+        Uri.parse('${Constants.uri}users/signup'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
         },
@@ -80,8 +84,7 @@ class AuthService {
       var userProvider = Provider.of<UserProvider>(context, listen: false);
       print("logging in");
       http.Response res = await http.post(
-        Uri.parse(
-            'https://ft-final-gauravs-projects-9d6ba5c9.vercel.app/users/login'),
+        Uri.parse('${Constants.uri}users/login'),
         // body: user.toJson(),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
@@ -124,11 +127,11 @@ class AuthService {
   void getUserData(BuildContext context) async {
     var userProvider = Provider.of<UserProvider>(context, listen: false);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? user = prefs.getString("user");
+    String? user = await prefs.getString("user");
     print("user ");
     print(user);
-    await prefs.setString('user', '');
     if (user == null || user == "") {
+      await prefs.setString('user', '');
       print("setting to null");
       User user = User(
           id: "", name: "", email: "", phoneNumber: "", city: "", password: "");
@@ -150,7 +153,7 @@ class AuthService {
 
     userProvider.setUserFromModel(usernew);
     navigator.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => MyHomePage()),
+        MaterialPageRoute(builder: (context) => LoginSignUpPage()),
         (route) => false);
   }
 
@@ -164,7 +167,7 @@ class AuthService {
     print(userid);
     try {
       http.Response res = await http.post(
-        Uri.parse('http://192.168.231.58:3000/location/get'),
+        Uri.parse('${Constants.uri}location/get'),
         // body: user.toJson(),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
@@ -183,6 +186,202 @@ class AuthService {
         onSuccess: () {
           print(res.body);
           locationListProvider.setLocationList(res.body);
+        },
+      );
+    } catch (e) {
+      print('Error: ${e.toString()}');
+    }
+  }
+
+  void fetchCategories({
+    required BuildContext context,
+  }) async {
+    print("ffetch");
+    var categoryListProvider =
+        Provider.of<CategoryListProvider>(context, listen: false);
+
+    try {
+      http.Response res = await http.get(
+        Uri.parse('${Constants.uri}category/getall'),
+      );
+      print('Response status: ${res.statusCode}');
+      print('Response body: ${res.body}');
+      print('Response array: ${jsonEncode(jsonDecode(res.body)['body'])}');
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          categoryListProvider.setCategoryList(res.body);
+        },
+      );
+    } catch (e) {
+      print(e.toString());
+    }
+    print("ffetch");
+  }
+
+  Future<void> fetchRepairRequest({
+    required BuildContext context,
+    required String userid,
+  }) async {
+    print("fetching Reapir Requests");
+    var repairRequestProvider =
+        Provider.of<RepairRequestListProvider>(context, listen: false);
+    print(userid);
+    try {
+      http.Response res = await http.post(
+        Uri.parse('${Constants.uri}repair_request/get/user'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(<String, String>{
+          'userId': userid,
+        }),
+      );
+      print(res.body);
+      print("fetching Reapir Requests");
+
+      print('Response status: ${res.statusCode}');
+      print('Response body: ${res.body}');
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          print(res.body);
+          repairRequestProvider.setRepairRequestList(res.body);
+          print("done ....................");
+        },
+      );
+    } catch (e) {
+      print('Error: ${e.toString()}');
+    }
+  }
+
+  void _fetchCategories({
+    required BuildContext context,
+  }) async {
+    print("ffetch");
+    var categoryListProvider =
+        Provider.of<CategoryListProvider>(context, listen: false);
+
+    try {
+      http.Response res = await http.get(
+        Uri.parse('${Constants.uri}category/getall'),
+      );
+      print('Response status: ${res.statusCode}');
+      print('Response body: ${res.body}');
+      print('Response array: ${jsonEncode(jsonDecode(res.body)['body'])}');
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          categoryListProvider.setCategoryList(res.body);
+        },
+      );
+    } catch (e) {
+      print(e.toString());
+    }
+    print("ffetch");
+  }
+
+  void fetchProducts({
+    required BuildContext context,
+  }) async {
+    var productListProvider =
+        Provider.of<ProductListProvider>(context, listen: false);
+
+    try {
+      http.Response res = await http.get(
+        Uri.parse('${Constants.uri}product/getall'),
+      );
+      print('Response status: ${res.statusCode}');
+      print('Response body: ${res.body}');
+      print('Response array: ${jsonEncode(jsonDecode(res.body)['body'])}');
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          productListProvider.setProductList(res.body);
+        },
+      );
+    } catch (e) {
+      print(e.toString());
+      showSnackBar(context, " error ?? ${e.toString()}");
+    }
+  }
+
+  void getRepairRequestsPendingAction({
+    required BuildContext context,
+    required String repairRequestId,
+  }) async {
+    print("thsi");
+    print(repairRequestId);
+    print("thsi");
+
+    var pendingActionListProvider =
+        Provider.of<PendingActionListProvider>(context, listen: false);
+
+    try {
+      http.Response res = await http.post(
+        Uri.parse('${Constants.uri}pending_action/get'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(<String, String>{
+          'repairRequestId': repairRequestId,
+        }),
+      );
+      print('Response status: ${res.statusCode}');
+      print('Response body: ${res.body}');
+      print('Response array: ${jsonEncode(jsonDecode(res.body)['body'])}');
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          pendingActionListProvider.setPendingActionList(res.body);
+          // set(res.body);
+        },
+      );
+    } catch (e) {
+      print(e.toString());
+      showSnackBar(context, " error ?? ${e.toString()}");
+    }
+  }
+
+  void updatePendingAction({
+    required BuildContext context,
+    required String PendingActionId,
+    required String response,
+    required String comment,
+  }) async {
+    print("updating pending action");
+    var pendingActionListProvider =
+        Provider.of<PendingActionListProvider>(context, listen: false);
+    // print(userid);
+    try {
+      http.Response res = await http.post(
+        Uri.parse('${Constants.uri}pending_action/update'),
+        // body: user.toJson(),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: jsonEncode(<String, String>{
+          'PendingActionId': PendingActionId,
+          'response': response,
+          'comment': comment,
+        }),
+      );
+      print(res.body);
+      print('Response status: ${res.statusCode}');
+      print('Response body: ${res.body}');
+
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          print(res.body);
+          pendingActionListProvider.setPendingActionList(res.body);
         },
       );
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:fixthis/services/auth_services.dart';
+import 'package:fixthis/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -33,7 +34,7 @@ class _AddLocationState extends State<AddLocation> {
       print("sending");
       try {
         http.Response res = await http.post(
-          Uri.parse('http://192.168.231.58:3000/location/add'),
+          Uri.parse('${Constants.uri}location/add'),
           // body: user.toJson(),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8'
