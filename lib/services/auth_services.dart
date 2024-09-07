@@ -103,11 +103,18 @@ class AuthService {
         context: context,
         onSuccess: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
+          final responseBody = jsonDecode(res.body);
+          final userBody = responseBody['body'];
           userProvider.setUser(jsonEncode(jsonDecode(res.body)['body']));
           await prefs.setString(
             'user',
             jsonEncode(jsonDecode(res.body)['body']),
           );
+          String? fcmtoken = await prefs.getString("fcmtoken");
+          String userid = userBody['_id'];
+          if (fcmtoken != null && fcmtoken.isNotEmpty) {
+            updateFcmToken(userid: userid, fcmtoken: fcmtoken);
+          }
           navigator.pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const HomePage()),
             (route) => false,
@@ -121,6 +128,100 @@ class AuthService {
     } catch (e) {
       print(e.toString());
       showSnackBar(context, " error ?? ${e.toString()}");
+    }
+  }
+
+  void updateUser(
+      {required BuildContext context,
+      required String userid,
+      String? name,
+      String? city,
+      String? fcmtoken}) async {
+    if (userid.isEmpty) {
+      showSnackBar(context, 'userid is required.');
+      return;
+    }
+
+    try {
+      final navigator = Navigator.of(context);
+      var userProvider = Provider.of<UserProvider>(context, listen: false);
+      print("logging in");
+
+      Map<String, String> requestBody = {
+        'userid': userid,
+      };
+
+      if (name != null) requestBody['name'] = name;
+      if (city != null) requestBody['city'] = city;
+      if (fcmtoken != null) requestBody['fcmtoken'] = fcmtoken;
+      http.Response res = await http.post(
+          Uri.parse('${Constants.uri}users/update'),
+          // body: user.toJson(),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(requestBody));
+      print('Response status: ${res.statusCode}');
+      print('Response status: ${res}');
+      print('Response body: ${res.body}');
+      print('Response real body: ${jsonDecode(res.body)['body']}');
+      httpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          userProvider.setUser(jsonEncode(jsonDecode(res.body)['body']));
+          await prefs.setString(
+            'user',
+            jsonEncode(jsonDecode(res.body)['body']),
+          );
+
+          showSnackBar(
+            context,
+            'Fields updated successfully',
+          );
+        },
+      );
+    } catch (e) {
+      print(e.toString());
+      showSnackBar(context, " error ?? ${e.toString()}");
+    }
+  }
+
+  void updateFcmToken(
+      {required String userid, required String fcmtoken}) async {
+    if (userid.isEmpty || fcmtoken.isEmpty) {
+      print('userid || fcmtoken is required.');
+      return;
+    }
+
+    try {
+      print("updating fcm token");
+
+      Map<String, String> requestBody = {
+        'userid': userid,
+        'fcmtoken': fcmtoken,
+      };
+
+      http.Response res = await http.post(
+          Uri.parse('${Constants.uri}users/update'),
+          // body: user.toJson(),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(requestBody));
+      print('Response status: ${res.statusCode}');
+      print('Response status: ${res}');
+      print('Response body: ${res.body}');
+      print('Response real body: ${jsonDecode(res.body)['body']}');
+
+      if (res.statusCode < 300) {
+        print("fcm updated successfully");
+      } else {
+        print("error : ${res.body}");
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -148,6 +249,7 @@ class AuthService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? user = prefs.getString("user");
     print(user);
+    await prefs.setString('user', '');
     User usernew = User(
         id: "", name: "", email: "", phoneNumber: "", city: "", password: "");
 
