@@ -87,7 +87,7 @@ class locationAppBar extends StatelessWidget {
                 _logout();
               },
               icon: Icon(
-                Icons.account_circle_rounded,
+                Icons.login_rounded,
                 color: Color(Constants.mainColorHsh),
                 size: 36,
               ),

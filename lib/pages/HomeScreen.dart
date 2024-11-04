@@ -89,18 +89,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   items: [
                     Container(
-                      width: 5000,
-                      height: 400,
-                      color: Colors.red,
-                      child: Center(child: Text("1")),
+                      // color: Colors.red,
+                      child: Center(
+                        child: Image.asset(
+                          'assets/images/front.jpg',
+                          width: 262,
+                        ),
+                      ),
                     ),
                     Container(
-                      color: Colors.blue,
-                      child: Center(child: Text("2")),
+                      // color: Colors.blue,
+                      child: Center(
+                        child: Image.asset(
+                          'assets/images/front2.png',
+                          width: 262,
+                        ),
+                      ),
                     ),
                     Container(
-                      color: Colors.green,
-                      child: Center(child: Text("3")),
+                      // color: Colors.green,
+                      child: Center(
+                        child: Image.asset(
+                          'assets/images/front1.jpg',
+                          width: 262,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -126,6 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Padding(
                   padding: EdgeInsets.all(8),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       for (var i = 0;
                           i < _categories.categorylist.length;
@@ -175,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Padding(
                   padding: EdgeInsets.all(8),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       for (var i = 0; i < _categories.categorylist.length; i++)
                         Wrap(

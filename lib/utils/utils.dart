@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,12 +33,21 @@ void httpErrorHandle({
       } else {
         // Handle server-side errors (5xx)
         errorMessage = responseBody['error'] ?? 'Server-side error';
-      }
+      }   
     } catch (e) {
       // Handle JSON parsing errors
       errorMessage = 'Error parsing response: ${e.toString()}';
     }
 
     showSnackBar(context, errorMessage);
+  }
+}
+
+class ScaleSize {
+  static double textScaleFactor(BuildContext context,
+      {double maxTextScaleFactor = 1}) {
+    final width = MediaQuery.of(context).size.width;
+    double val = (width / 1400) * maxTextScaleFactor;
+    return max(0.8, min(val, maxTextScaleFactor));
   }
 }

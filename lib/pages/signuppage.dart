@@ -1,4 +1,5 @@
 import 'package:fixthis/services/auth_services.dart';
+import 'package:fixthis/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
@@ -79,22 +80,32 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xff00BF63),
+      resizeToAvoidBottomInset: true,
+      // backgroundColor: Color(0xff00BF63),
+      backgroundColor: Colors.white,
       body: SafeArea(
-        top: false,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 48, 0, 28),
-              child: Image.asset(
-                'assets/images/signup.png',
-                width: 262,
-                height: 50,
+        // top: false,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height / 8,
+                decoration: BoxDecoration(
+                  color: Color(Constants.mainColorHsh),
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                ),
+                child: Center(
+                  child: Image.asset(
+                    'assets/images/signup.png',
+                    width: MediaQuery.of(context).size.width / 2,
+                    height: MediaQuery.of(context).size.height / 4,
+                  ),
+                ),
               ),
-            ),
-            Expanded(
-              child: Container(
+              Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(32),
@@ -358,8 +369,8 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

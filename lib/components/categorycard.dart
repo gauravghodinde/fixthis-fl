@@ -1,6 +1,5 @@
 import 'package:fixthis/model/category.dart';
 import 'package:fixthis/pages/categoryseachpage.dart';
-import 'package:fixthis/pages/searchpage.dart';
 import 'package:flutter/material.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -31,8 +30,8 @@ class CategoryCard extends StatelessWidget {
             children: [
               Image.network(
                 category.image,
-                width: 75,
-                height: 75,
+                width: MediaQuery.of(context).size.width / 3,
+                height: MediaQuery.of(context).size.width / 3,
               ),
               Text(
                 category.name,

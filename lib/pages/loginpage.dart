@@ -1,4 +1,5 @@
 import 'package:fixthis/services/auth_services.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -60,21 +61,35 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xff00BF63),
+      resizeToAvoidBottomInset: true,
+      // backgroundColor: const Color(0xff00BF63),
+      backgroundColor: Colors.white,
       body: SafeArea(
         top: false,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 98, 0, 28),
-              child: Image.asset(
-                'assets/images/login.png',
-                width: 262,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 4,
+                decoration: const BoxDecoration(
+                  color: Color(0xff00BF63),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                ),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Image.asset(
+                      'assets/images/login.png',
+                      width: 262,
+                    ),
+                  ),
+                ),
               ),
-            ),
-            Expanded(
-              child: Container(
+              Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(32),
@@ -269,8 +284,8 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

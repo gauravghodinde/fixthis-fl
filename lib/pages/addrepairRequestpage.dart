@@ -234,27 +234,29 @@ class _AddRepairRequestState extends State<AddRepairRequest> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: showOptions,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white54,
-                      border: Border.all(
-                        color: Colors.grey[400]!, // border color
-                        width: .0, // border width
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.white54,
+                  border: Border.all(
+                    color: Colors.grey[400]!, // border color
+                    width: .0, // border width
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: showOptions,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Icon(
                                 Icons.image,
@@ -304,200 +306,205 @@ class _AddRepairRequestState extends State<AddRepairRequest> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  // isScrollControlled: true,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return SingleChildScrollView(
-                                      child: Container(
-                                        padding: EdgeInsets.fromLTRB(
-                                            16,
-                                            16,
-                                            16,
-                                            MediaQuery.of(context)
-                                                    .viewInsets
-                                                    .bottom +
-                                                16),
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        decoration: BoxDecoration(
-                                          // color: Colors.w,
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          color: Colors.white54,
-                                          border: Border.all(
-                                            color: Colors
-                                                .grey[400]!, // border color
-                                            width: .0, // border width
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: [
-                                              // Text("Description"),
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width -
-                                                    40,
-                                                // height: 40,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(0),
-                                                  color: Colors.white54,
-                                                  border: Border.all(
-                                                    color: Colors.green[
-                                                        500]!, // border color
-                                                    width: .0, // border width
-                                                  ),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      16.0),
-                                                  child: Column(
-                                                    children: [
-                                                      // Text(
-                                                      //   "Add Description of the repair",
-                                                      //   style: TextStyle(
-                                                      //     fontWeight: FontWeight.w500,
-                                                      //     fontSize: 18,
-                                                      //   ),
-                                                      // ),
-                                                      TextField(
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .multiline,
-                                                        maxLines: null,
-                                                        controller:
-                                                            _descriptionController,
-                                                        decoration: InputDecoration(
-                                                            labelText:
-                                                                "enter the discription",
-                                                            focusColor:
-                                                                Colors.black26,
-                                                            fillColor:
-                                                                Colors.black45),
-                                                      ),
-                                                      IconButton(
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              _description =
-                                                                  _descriptionController
-                                                                      .text;
-                                                            });
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          icon:
-                                                              Icon(Icons.close))
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }).whenComplete(() {
-                                setState(() {
-                                  _description = _descriptionController.text;
-                                });
-                                ;
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.text_snippet_outlined,
-                                  color: Color(Constants.mainColorHsh),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Desription of the Product / Note for repairing",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(
-                                        width: 250,
-                                        child: Text(
-                                          _description,
-                                          style: TextStyle(
-                                            color: Colors.black45,
-                                            decoration:
-                                                TextDecoration.underline,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Column(
-                  // crossAxisAlignment: ,
-                  children: [
-                    LocationRequestCard(
-                      type: "Pickup",
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.white54,
-                        border: Border.all(
-                          color: Colors.grey[400]!, // border color
-                          width: .0, // border width
-                        ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                              // isScrollControlled: true,
+
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SingleChildScrollView(
+                                  child: Container(
+                                    padding: EdgeInsets.fromLTRB(
+                                        16,
+                                        16,
+                                        16,
+                                        MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom +
+                                            16),
+                                    width: MediaQuery.of(context).size.width,
+                                    height:
+                                        MediaQuery.of(context).size.height / 2 +
+                                            MediaQuery.sizeOf(context).height,
+                                    decoration: BoxDecoration(
+                                      // color: Colors.w,
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Colors.white54,
+                                      border: Border.all(
+                                        color:
+                                            Colors.grey[400]!, // border color
+                                        width: .0, // border width
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          // Text("Description"),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                40,
+                                            // height: 40,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(0),
+                                              color: Colors.white54,
+                                              border: Border.all(
+                                                color: Colors.green[
+                                                    500]!, // border color
+                                                width: .0, // border width
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Column(
+                                                children: [
+                                                  // Text(
+                                                  //   "Add Description of the repair",
+                                                  //   style: TextStyle(
+                                                  //     fontWeight: FontWeight.w500,
+                                                  //     fontSize: 18,
+                                                  //   ),
+                                                  // ),
+                                                  TextField(
+                                                    keyboardType:
+                                                        TextInputType.multiline,
+                                                    maxLines: null,
+                                                    controller:
+                                                        _descriptionController,
+                                                    decoration: InputDecoration(
+                                                        labelText:
+                                                            "enter the discription",
+                                                        focusColor:
+                                                            Colors.black26,
+                                                        fillColor:
+                                                            Colors.black45),
+                                                  ),
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          _description =
+                                                              _descriptionController
+                                                                  .text;
+                                                        });
+                                                        Navigator.pop(context);
+                                                      },
+                                                      icon: Icon(Icons.close))
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).whenComplete(() {
+                            setState(() {
+                              _description = _descriptionController.text;
+                            });
+                            ;
+                          });
+                        },
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Delivery address is same as pickup address"),
-                            Checkbox(
-                                value: _sameLocation,
-                                onChanged: (val) {
-                                  setState(() {
-                                    _sameLocation = !_sameLocation;
-                                  });
-                                }),
+                            Icon(
+                              Icons.text_snippet_outlined,
+                              color: Color(Constants.mainColorHsh),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Desription of the Product / Note for repairing",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500),
+                                    textScaler: TextScaler.linear(
+                                      ScaleSize.textScaleFactor(context),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 250,
+                                    child: Text(
+                                      _description,
+                                      style: TextStyle(
+                                        color: Colors.black45,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    !_sameLocation
-                        ? LocationRequestCard(type: "Delivery")
-                        : Text("delivery location is same as pickup location"),
+                    )
                   ],
                 ),
-              ],
-            ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Column(
+                // crossAxisAlignment: ,
+                children: [
+                  LocationRequestCard(
+                    type: "Pickup",
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white54,
+                      border: Border.all(
+                        color: Colors.grey[400]!, // border color
+                        width: .0, // border width
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Delivery address is same as pickup address",
+                            textScaler: TextScaler.linear(
+                              ScaleSize.textScaleFactor(context),
+                            ),
+                          ),
+                          Checkbox(
+                              value: _sameLocation,
+                              onChanged: (val) {
+                                setState(() {
+                                  _sameLocation = !_sameLocation;
+                                });
+                              }),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  !_sameLocation
+                      ? LocationRequestCard(type: "Delivery")
+                      : Text("delivery location is same as pickup location"),
+                ],
+              ),
+            ],
           ),
         ),
       ),

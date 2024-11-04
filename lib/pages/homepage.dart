@@ -72,8 +72,8 @@ class _HomePageState extends State<HomePage> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
+              icon: Icon(Icons.access_time_outlined),
+              label: 'My Requests',
             ),
           ],
         ),

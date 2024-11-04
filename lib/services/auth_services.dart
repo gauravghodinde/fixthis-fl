@@ -3,6 +3,7 @@ import 'package:fixthis/model/pendingActionList.dart';
 import 'package:fixthis/model/user.dart';
 import 'package:fixthis/pages/LoginSignupPage.dart';
 import 'package:fixthis/pages/homepage.dart';
+import 'package:fixthis/pages/loginpage.dart';
 import 'package:fixthis/providers/RepairReqestProvider.dart';
 import 'package:fixthis/providers/categoryProvider.dart';
 import 'package:fixthis/providers/locationListProvider.dart';
@@ -25,6 +26,7 @@ class AuthService {
     required String password,
     required String phoneNumber,
   }) async {
+    final navigator = Navigator.of(context);
     if (name.isEmpty ||
         email.isEmpty ||
         city.isEmpty ||
@@ -55,6 +57,10 @@ class AuthService {
         response: res,
         context: context,
         onSuccess: () {
+          navigator.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const Login()),
+            (route) => false,
+          );
           showSnackBar(
             context,
             'Account created! Login with the same credentials',
@@ -254,9 +260,9 @@ class AuthService {
         id: "", name: "", email: "", phoneNumber: "", city: "", password: "");
 
     userProvider.setUserFromModel(usernew);
-    navigator.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginSignUpPage()),
-        (route) => false);
+    navigator.push(
+      MaterialPageRoute(builder: (context) => LoginSignUpPage()),
+    );
   }
 
   void fetchLocations({
